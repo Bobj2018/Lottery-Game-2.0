@@ -1,14 +1,11 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import Player from "./components/Player";
-import Computer from "./components/Computer";
+// import Computer from "./components/Computer";
 
 function App() {
   return (
     <div className="App">
-      <Computer />
-      <Player />
+      <Player limitNumber={5} maxNumber={50} />
     </div>
   );
 }
