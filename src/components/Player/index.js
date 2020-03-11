@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 
 function Player(props) {
-  const [userInput, setUserInput] = useState([]);
+  const [userInput, setUserInput] = useState({});
 
   function handleChange(e) {
     setUserInput({
       ...userInput,
-      [e.target.name]: [e.target.value]
+      [e.target.name]: e.target.value
     });
-    console.log(userInput);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(userInput);
   }
 
   return (
@@ -23,12 +23,13 @@ function Player(props) {
         {props.lotteryNumbers.map((num, index) => (
           <input
             key={index}
-            name={`input-${index}`}
-            id={`input-${index}`}
+            name={`${index}`}
+            id={`${index}`}
             type="number"
-            placeholder={index + 1}
+            placeholder={props.lotteryNumbers[index]}
             value={userInput[index]}
             onChange={handleChange}
+            required
           />
         ))}
         <button type="submit">Submit</button>
