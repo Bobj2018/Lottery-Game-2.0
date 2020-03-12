@@ -1,7 +1,7 @@
-import { UPDATE_LOTTERY } from "../actions";
+import { UPDATE_LOTTERY, UPDATE_PLAYER } from "../actions";
 
 export const initialState = {
-  lotteryNumbers: [1, 2, 3],
+  lotteryNumbers: [],
   playerNumbers: [],
   isGenerating: false,
   numberOfGames: 0,
@@ -15,6 +15,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         lotteryNumbers: action.payload
+      };
+    case UPDATE_PLAYER:
+      return {
+        ...state,
+        playerNumbers: action.payload
       };
     default:
       return state;

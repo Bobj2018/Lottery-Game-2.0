@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { updatePlayer } from "../../actions";
 
 function Player(props) {
   const [userInput, setUserInput] = useState({});
 
+  // useEffect(() => {
+  //   props.lotteryNumbers.map((num, index) => {
+  //     setUserInput({
+  //       ...userInput,
+  //       [index]: 0
+  //     });
+  //   });
+  // }, []);
+
   function handleChange(e) {
     setUserInput({
       ...userInput,
-      [e.target.name]: e.target.value
+      [e.target.name]: Number(e.target.value)
     });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userInput);
+    const playerArr = [];
+    for (let i = 0; i < 6; i++) {
+      playerArr.push(userInput[i]);
+    }
+    props.updatePlayer(playerArr);
   }
 
   return (
@@ -27,9 +41,11 @@ function Player(props) {
             id={`${index}`}
             type="number"
             placeholder={props.lotteryNumbers[index]}
-            value={userInput[index]}
+            value={String(userInput[index])}
             onChange={handleChange}
             required
+            min={0}
+            max={50}
           />
         ))}
         <button type="submit">Submit</button>
@@ -45,4 +61,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Player);
+export default connect(mapStateToProps, { updatePlayer })(Player);
