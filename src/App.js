@@ -1,14 +1,28 @@
-import React from "react";
-import Player from "./components/Player";
-import Computer from "./components/Computer";
+import React from 'react';
+import { connect } from 'react-redux';
+import { playGame } from './actions';
+import Player from './components/Player';
+import Computer from './components/Computer';
 
-function App() {
-  return (
-    <div className="App">
-      <Player limitNumber={5} maxNumber={50} />
-      <Computer />
-    </div>
-  );
+function App(props) {
+	return (
+		<div className='App'>
+			{props.isGuessing ? (
+				<>
+					<Player limitNumber={5} maxNumber={50} />
+					<Computer />
+				</>
+			) : (
+				<button onClick={props.playGame}>Play Game</button>
+			)}
+		</div>
+	);
 }
 
-export default App;
+function mapStateToProps(state) {
+	return {
+		isGuessing: state.isGuessing
+	};
+}
+
+export default connect(mapStateToProps, { playGame })(App);

@@ -1,41 +1,49 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { updateLottery } from "../../actions";
-import { connect } from "react-redux";
+import React, { useEffect } from 'react';
+import { updateLottery, generateLottery } from '../../actions';
+import { connect } from 'react-redux';
 
 function Computer(props) {
-  const createRandomLottery = () => {
-    props.updateLottery([]);
-    const randomLotto = [];
+	const createRandomLottery = () => {
+		props.generateLottery();
+		const randomLotto = [];
 
-    for (let i = 0; i < 6; i++) {
-      randomLotto.push(Math.floor(Math.random() * 51));
-    }
+		for (let i = 0; i < 6; i++) {
+			randomLotto.push(Math.floor(Math.random() * 51));
+		}
 
-    props.updateLottery(randomLotto);
-  };
+		setTimeout(() => {
+			props.updateLottery(randomLotto);
+		}, 3000);
+	};
 
-  useEffect(() => {
-    createRandomLottery();
-  }, []);
+	useEffect(() => {
+		createRandomLottery();
+	}, []);
 
-  return (
-    <div>
-      <h2>Computer</h2>
-      <button onClick={createRandomLottery}>Generate</button>
-      {props.lotteryNumbers.map((number, index) => (
-        <p key={index}>{number}</p>
-      ))}
-    </div>
-  );
+	return (
+		<div>
+			<h2>Computer</h2>
+			<button onClick={createRandomLottery}>Generate</button>
+			{props.isGenerating ? (
+				<p>Generating</p>
+			) : (
+				props.lotteryNumbers.map((number, index) => (
+					<p key={index}> {number}</p>
+				))
+			)}
+		</div>
+	);
 }
 
 function mapStateToProps(state) {
-  return {
-    playerNumbers: state.playerNumbers,
-    lotteryNumbers: state.lotteryNumbers,
-    isGenerating: state.isGenerating
-  };
+	return {
+		playerNumbers: state.playerNumbers,
+		lotteryNumbers: state.lotteryNumbers,
+		isGenerating: state.isGenerating
+	};
 }
 
-export default connect(mapStateToProps, { updateLottery })(Computer);
+export default connect(mapStateToProps, { updateLottery, generateLottery })(
+	Computer
+);
