@@ -4,18 +4,27 @@ import { playGame } from './actions';
 import Player from './components/Player';
 import Computer from './components/Computer';
 
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+
+import './App.css';
+
 function App(props) {
 	return (
-		<div className='App'>
+		<Container fixed className='App'>
+			<h1>Lottery Game 2.0</h1>
+
 			{props.isGuessing ? (
 				<>
 					<Player limitNumber={5} maxNumber={50} />
 					<Computer />
 				</>
 			) : (
-				<button onClick={props.playGame}>Play Game</button>
+				<Button variant='contained' color='primary' onClick={props.playGame}>
+					Play Game
+				</Button>
 			)}
-		</div>
+		</Container>
 	);
 }
 

@@ -23,15 +23,17 @@ function Computer(props) {
 
 	return (
 		<div>
-			<h2>Computer</h2>
-			<button onClick={createRandomLottery}>Generate</button>
-			{props.isGenerating ? (
-				<p>Generating</p>
-			) : (
-				props.lotteryNumbers.map((number, index) => (
-					<p key={index}> {number}</p>
-				))
-			)}
+			{
+				//<h2>Computer</h2>
+				// <button onClick={createRandomLottery}>Generate</button>
+				// {props.isGenerating ? (
+				// 	<p>Generating</p>
+				// ) : (
+				// 	props.lotteryNumbers.map((number, index) => (
+				// 		<p key={index}> {number}</p>
+				// 	))
+				// )}
+			}
 		</div>
 	);
 }
