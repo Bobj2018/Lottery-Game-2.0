@@ -55,7 +55,6 @@ function Player(props) {
 				}
 			});
 			setIsCorrectGuess(correctGuessArr);
-			console.log(correctGuessArr);
 		}
 	}
 
