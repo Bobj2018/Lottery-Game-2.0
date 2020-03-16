@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { updatePlayer } from '../../actions';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { updatePlayer, winGame } from '../../actions';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -13,12 +13,6 @@ const useStyles = makeStyles(theme => ({
 		'& > *': {
 			margin: theme.spacing(1)
 		}
-	},
-	correct: {
-		color: 'green'
-	},
-	incorrect: {
-		color: 'red'
 	}
 }));
 
@@ -41,20 +35,23 @@ function Player(props) {
 			playerArr.push(userInput[i]);
 		}
 		props.updatePlayer(playerArr);
-
 		isGuessCorrect(props.lotteryNumbers, playerArr);
 	}
 
 	function isGuessCorrect(lottery, player) {
 		const correctGuessArr = [];
 		if (JSON.stringify(lottery) === JSON.stringify(player)) {
-			console.log('Winner');
+			props.winGame();
 		} else {
 			lottery.map((num, index) => {
 				if (num === player[index]) {
 					correctGuessArr.push(true);
 				} else {
-					correctGuessArr.push(false);
+					if (lottery.includes(player[index])) {
+						correctGuessArr.push('close');
+					} else {
+						correctGuessArr.push(false);
+					}
 				}
 			});
 			setIsCorrectGuess(correctGuessArr);
@@ -67,7 +64,11 @@ function Player(props) {
 			return 'inactive';
 		} else {
 			if (isCorrectGuess[index]) {
-				return 'correct';
+				if (isCorrectGuess[index] === 'close') {
+					return 'close';
+				} else {
+					return 'correct';
+				}
 			} else {
 				return 'incorrect';
 			}
@@ -76,8 +77,8 @@ function Player(props) {
 
 	return (
 		<div>
-			<h2>Guess a number between 1 and 50!</h2>
-
+			<h2>Guess a number between 0 and {props.limitNumber}!</h2>
+			<h3>Game {props.numberOfGames}</h3>
 			{props.isGenerating ? (
 				<CircularProgress />
 			) : (
@@ -85,7 +86,6 @@ function Player(props) {
 					{props.lotteryNumbers.map((num, index) => (
 						<>
 							<TextField
-								className={inputGuess(index)}
 								key={index}
 								name={`${index}`}
 								id={`${index}`}
@@ -93,14 +93,36 @@ function Player(props) {
 								value={String(userInput[index])}
 								onChange={handleChange}
 								required
-								inputProps={{ min: '0', max: '50', step: '1' }}
+								inputProps={{
+									min: '0',
+									max: String(props.limitNumber),
+									step: '1',
+									className: inputGuess(index)
+								}}
 							/>
 						</>
 					))}
 					<br />
-					<Button variant='outlined' color='primary' size='large' type='submit'>
-						Submit
-					</Button>
+					{props.isGuessing ? (
+						<Button
+							variant='outlined'
+							color='primary'
+							size='large'
+							type='submit'
+						>
+							Submit
+						</Button>
+					) : (
+						<Button
+							disabled
+							variant='outlined'
+							color='primary'
+							size='large'
+							type='submit'
+						>
+							Checking Numbers
+						</Button>
+					)}
 				</form>
 			)}
 		</div>
@@ -111,8 +133,10 @@ function mapStateToProps(state) {
 	return {
 		playerNumbers: state.playerNumbers,
 		lotteryNumbers: state.lotteryNumbers,
-		isGenerating: state.isGenerating
+		isGenerating: state.isGenerating,
+		isGuessing: state.isGuessing,
+		numberOfGames: state.numberOfGames
 	};
 }
 
-export default connect(mapStateToProps, { updatePlayer })(Player);
+export default connect(mapStateToProps, { updatePlayer, winGame })(Player);

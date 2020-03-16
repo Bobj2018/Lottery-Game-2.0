@@ -2,7 +2,8 @@ import {
 	UPDATE_LOTTERY,
 	UPDATE_PLAYER,
 	PLAY_GAME,
-	GENERATE_LOTTERY
+	GENERATE_LOTTERY,
+	WIN_GAME
 } from '../actions';
 
 export const initialState = {
@@ -11,7 +12,8 @@ export const initialState = {
 	isGenerating: false,
 	numberOfGames: 0,
 	isCorrect: false,
-	isGuessing: false
+	isGuessing: false,
+	attempts: 0
 };
 
 export const reducer = (state = initialState, action) => {
@@ -25,18 +27,32 @@ export const reducer = (state = initialState, action) => {
 		case UPDATE_PLAYER:
 			return {
 				...state,
-				playerNumbers: action.payload
+				playerNumbers: action.payload,
+				attempts: ++state.attempts
 			};
 		case PLAY_GAME:
 			return {
 				...state,
-				isGuessing: true
+				playerNumbers: [],
+				isGuessing: true,
+				isCorrect: false,
+				attempts: 0,
+				numberOfGames: ++state.numberOfGames
 			};
 		case GENERATE_LOTTERY:
 			return {
 				...state,
 				lotteryNumbers: [],
 				isGenerating: true
+			};
+		case WIN_GAME:
+			return {
+				...state,
+				lotteryNumbers: [],
+				playerNumbers: [],
+				isGenerating: false,
+				isCorrect: true,
+				isGuessing: false
 			};
 		default:
 			return state;

@@ -37,14 +37,6 @@
 	}
 }
 
-.correct {
-	color: green;
-}
-
-.incorrect {
-	color: red;
-}
-
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
@@ -55,4 +47,16 @@ input[type='number'] {
 	width: '25px';
 	font-size: 50px;
 	text-align: center;
+}
+
+input.correct {
+	color: green;
+}
+
+input.incorrect {
+	color: red;
+}
+
+input.close {
+	color: gold;
 }

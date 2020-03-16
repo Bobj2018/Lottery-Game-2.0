@@ -4,12 +4,12 @@ import { updateLottery, generateLottery } from '../../actions';
 import { connect } from 'react-redux';
 
 function Computer(props) {
-	const createRandomLottery = () => {
+	const createRandomLottery = (fieldNumber, maxNumber) => {
 		props.generateLottery();
 		const randomLotto = [];
 
-		for (let i = 0; i < 6; i++) {
-			randomLotto.push(Math.floor(Math.random() * 51));
+		for (let i = 0; i < fieldNumber; i++) {
+			randomLotto.push(Math.floor(Math.random() * maxNumber));
 		}
 
 		setTimeout(() => {
@@ -18,11 +18,11 @@ function Computer(props) {
 	};
 
 	useEffect(() => {
-		createRandomLottery();
+		createRandomLottery(props.fieldNumber, props.maxNumber);
 	}, []);
 
 	return (
-		<div>
+		<>
 			{
 				//<h2>Computer</h2>
 				// <button onClick={createRandomLottery}>Generate</button>
@@ -34,7 +34,7 @@ function Computer(props) {
 				// 	))
 				// )}
 			}
-		</div>
+		</>
 	);
 }
 
